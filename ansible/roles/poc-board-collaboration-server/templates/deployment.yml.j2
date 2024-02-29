@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poc-board-collaboration-server-deployment
+  namespace: {{ NAMESPACE }}
+  labels:
+    app: poc-board-collaboration-server
+    app.kubernetes.io/part-of: schulcloud-verbund
+    app.kubernetes.io/version: {{ POC_BOARD_COLLABORATION_SERVER_IMAGE_TAG }}
+    app.kubernetes.io/name: poc-board-collaboration-server
+    app.kubernetes.io/component: poc-board-collaboration-server
+    app.kubernetes.io/managed-by: ansible
+    git.branch: {{ POC_BOARD_COLLABORATION_SERVER_BRANCH_NAME }}
+    git.repo: {{ POC_BOARD_COLLABORATION_SERVER_REPO_NAME }}
+spec:
+  replicas: {{ POC_BOARD_COLLABORATION_SERVER_REPLICAS|default("1", true) }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+  revisionHistoryLimit: 4
+  paused: false
+  selector:
+    matchLabels:
+      app: poc-board-collaboration-server
+  template:
+    metadata:
+      labels:
+        app: poc-board-collaboration-server
+        app.kubernetes.io/part-of: schulcloud-verbund
+        app.kubernetes.io/version: {{ POC_BOARD_COLLABORATION_SERVER_IMAGE_TAG }}
+        app.kubernetes.io/name: poc-board-collaboration-server
+        app.kubernetes.io/component: poc-board-collaboration-server
+        app.kubernetes.io/managed-by: ansible
+        git.branch: {{ POC_BOARD_COLLABORATION_SERVER_BRANCH_NAME }}
+        git.repo: {{ POC_BOARD_COLLABORATION_SERVER_REPO_NAME }}
+      annotations:
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+      containers:
+      - name: poc-board-collaboration-server
+        image: {{ POC_BOARD_COLLABORATION_SERVER_IMAGE }}:{{ POC_BOARD_COLLABORATION_SERVER_IMAGE_TAG }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: {{ POC_BOARD_COLLABORATION_SERVER_PORT }}
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: poc-board-collaboration-server-configmap
+        resources:
+          limits:
+            cpu: {{ POC_BOARD_COLLABORATION_SERVER__CPU_LIMITS|default("1000m", true) }}
+            memory: {{ POC_BOARD_COLLABORATION_SERVER__MEMORY_LIMITS|default("32Mi", true) }}
+          requests:
+            cpu: {{ POC_BOARD_COLLABORATION_SERVER__CPU_REQUESTS|default("100m", true) }}
+            memory: {{ POC_BOARD_COLLABORATION_SERVER__MEMORY_REQUESTS|default("32Mi", true) }}
+{% if AFFINITY_ENABLE is defined and AFFINITY_ENABLE|bool %}
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 9
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/part-of
+                  operator: In
+                  values:
+                  - schulcloud-verbund
+              topologyKey: "kubernetes.io/hostname"
+              namespaceSelector: {}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+{% if ANIT_AFFINITY_NODEPOOL_ENABLE is defined and ANIT_AFFINITY_NODEPOOL_ENABLE|bool %}
+          - weight: 10
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - poc-board-collaboration-server
+              topologyKey: {{ ANIT_AFFINITY_NODEPOOL_TOPOLOGY_KEY }}
+{% endif %}
+          - weight: 20
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - poc-board-collaboration-server
+              topologyKey: "topology.kubernetes.io/zone"
+{% endif %}

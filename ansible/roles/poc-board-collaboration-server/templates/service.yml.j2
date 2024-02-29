@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: poc-board-collaboration-server-svc
+  namespace: {{ NAMESPACE }}
+  labels:
+    app: poc-board-collaboration-server
+spec:
+  ports:
+  - port: {{ POC_BOARD_COLLABORATION_SERVER_PORT }}
+  selector:
+    app: poc-board-collaboration-server
