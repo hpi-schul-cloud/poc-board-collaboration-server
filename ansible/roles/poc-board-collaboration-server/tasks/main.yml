@@ -1,17 +1,24 @@
-  - name: poc-board-collaboration-server configmap
-    kubernetes.core.k8s:
-      kubeconfig: ~/.kube/config
-      namespace: "{{ NAMESPACE }}"
-      template: configmap.yml.j2
+- name: poc-board-collaboration-server configmap
+  kubernetes.core.k8s:
+    kubeconfig: ~/.kube/config
+    namespace: '{{ NAMESPACE }}'
+    template: configmap.yml.j2
 
-  - name: poc-board-collaboration-server deployment
-    kubernetes.core.k8s:
-      kubeconfig: ~/.kube/config
-      namespace: "{{ NAMESPACE }}"
-      template: deployment.yml.j2
+- name: poc-board-collaboration-server deployment
+  kubernetes.core.k8s:
+    kubeconfig: ~/.kube/config
+    namespace: '{{ NAMESPACE }}'
+    template: deployment.yml.j2
 
-  - name: poc-board-collaboration-server service
-    kubernetes.core.k8s:
-      kubeconfig: ~/.kube/config 
-      namespace: "{{ NAMESPACE }}"
-      template: service.yml.j2
+- name: poc-board-collaboration-server service
+  kubernetes.core.k8s:
+    kubeconfig: ~/.kube/config
+    namespace: '{{ NAMESPACE }}'
+    template: service.yml.j2
+
+- name: poc-board-collaboration-server ingress
+  kubernetes.core.k8s:
+    kubeconfig: ~/.kube/config
+    namespace: '{{ NAMESPACE }}'
+    template: ingress.yml.j2
+    apply: yes
