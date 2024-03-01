@@ -9,7 +9,10 @@ import {
 import { Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({
+  path: '/poc-board-collaboration-server',
+  cors: { origin: '*' },
+})
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
