@@ -55,10 +55,10 @@ spec:
         resources:
           limits:
             cpu: {{ POC_BOARD_COLLABORATION_SERVER__CPU_LIMITS|default("1000m", true) }}
-            memory: {{ POC_BOARD_COLLABORATION_SERVER__MEMORY_LIMITS|default("32Mi", true) }}
+            memory: {{ POC_BOARD_COLLABORATION_SERVER__MEMORY_LIMITS|default("2Gi", true) }}
           requests:
             cpu: {{ POC_BOARD_COLLABORATION_SERVER__CPU_REQUESTS|default("100m", true) }}
-            memory: {{ POC_BOARD_COLLABORATION_SERVER__MEMORY_REQUESTS|default("32Mi", true) }}
+            memory: {{ POC_BOARD_COLLABORATION_SERVER__MEMORY_REQUESTS|default("128Mi", true) }}
 {% if AFFINITY_ENABLE is defined and AFFINITY_ENABLE|bool %}
       affinity:
         podAffinity:
