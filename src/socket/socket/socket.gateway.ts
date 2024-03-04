@@ -55,4 +55,12 @@ export class SocketGateway
     client.broadcast.emit('unlock-card-success', data);
     client.emit('unlock-card-success', data);
   }
+
+  @SubscribeMessage('delete-card-request')
+  handleDeleteCard(client: any, data: any) {
+    this.logger.log(`Message received from client id: ${client.id}`);
+    this.logger.debug(`Payload: ${data}`);
+    client.broadcast.emit('delete-card-success', data);
+    client.emit('delete-card-success', data);
+  }
 }
