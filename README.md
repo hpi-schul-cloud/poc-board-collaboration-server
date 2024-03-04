@@ -2,7 +2,6 @@
 
 Proof of Concept for implementing a websocket-server that enables collaboration on column boards between different users.
 
-
 ## Installation
 
 ```bash
@@ -41,4 +40,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## License
 
-GNU AFFERO GENERAL PUBLIC LICENSE V3 (see LICENSE)
+GNU AFFERO GENERAL PUBLIC LICENSE V3 (see LICENSE-file)
