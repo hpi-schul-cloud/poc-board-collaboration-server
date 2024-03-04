@@ -11,7 +11,12 @@ import { Logger } from '@nestjs/common';
 
 @WebSocketGateway({
   path: '/poc-board-collaboration-server',
-  cors: { origin: '*' },
+  cors: {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  },
 })
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
