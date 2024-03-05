@@ -71,4 +71,17 @@ export class SocketGateway
     client.broadcast.emit('delete-card-success', data);
     client.emit('delete-card-success', data);
   }
+
+  @SubscribeMessage('create-card-request')
+  handleCreateCard(client: any, data: any) {
+    this.logger.log(`Message received from client id: ${client.id}`);
+    this.logger.debug(`Payload: ${JSON.stringify(data)}`);
+
+    const cardId = `card${Math.floor(Math.random() * 1000)}`;
+    const responsePayload = { ...data, cardId, text: '' };
+    this.logger.debug(`Response Payload: ${JSON.stringify(responsePayload)}`);
+
+    client.broadcast.emit('create-card-success', responsePayload);
+    client.emit('create-card-success', responsePayload);
+  }
 }
