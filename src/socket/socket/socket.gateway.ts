@@ -84,4 +84,12 @@ export class SocketGateway
     client.broadcast.emit('create-card-success', responsePayload);
     client.emit('create-card-success', responsePayload);
   }
+
+  @SubscribeMessage('move-card-request')
+  handleMoveCard(client: any, data: any) {
+    this.logger.log(`Message received from client id: ${client.id}`);
+    this.logger.debug(`Payload: ${data}`);
+    client.broadcast.emit('move-card-success', data);
+    client.emit('move-card-success', data);
+  }
 }
