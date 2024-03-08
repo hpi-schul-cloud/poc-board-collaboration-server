@@ -90,6 +90,12 @@ export class SocketGateway
     this.logger.log(`Message received from client id: ${client.id}`);
     this.logger.debug(`Payload: ${data}`);
     client.broadcast.emit('move-card-success', data);
-    client.emit('move-card-success', data);
+  }
+
+  @SubscribeMessage('move-column-request')
+  handleMoveColumn(client: any, data: any) {
+    this.logger.log(`Message received from client id: ${client.id}`);
+    this.logger.debug(`Payload: ${data}`);
+    client.broadcast.emit('move-column-success', data);
   }
 }
