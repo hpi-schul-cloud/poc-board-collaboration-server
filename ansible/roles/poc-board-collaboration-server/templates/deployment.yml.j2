@@ -52,6 +52,8 @@ spec:
         envFrom:
         - configMapRef:
             name: poc-board-collaboration-server-configmap
+        - secretRef:
+            name: api-secret
         resources:
           limits:
             cpu: {{ POC_BOARD_COLLABORATION_SERVER__CPU_LIMITS|default("1000m", true) }}
