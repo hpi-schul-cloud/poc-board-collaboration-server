@@ -13,7 +13,7 @@ metadata:
     git.branch: {{ POC_BOARD_COLLABORATION_SERVER_BRANCH_NAME }}
     git.repo: {{ POC_BOARD_COLLABORATION_SERVER_REPO_NAME }}
 spec:
-  replicas: {{ POC_BOARD_COLLABORATION_SERVER_REPLICAS|default("1", true) }}
+  replicas: {{ POC_BOARD_COLLABORATION_SERVER_REPLICAS|default("3", true) }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
